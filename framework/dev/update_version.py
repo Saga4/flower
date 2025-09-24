@@ -37,7 +37,11 @@ ROOT_DIR = Path(__file__).parents[2]
 
 def _get_next_version(curr_version, increment):
     """Calculate the next version based on the type of release."""
-    major, minor, patch_version = map(int, curr_version.split("."))
+    # Split only into three parts, avoiding unnecessary iteration or split
+    v1, v2, v3 = curr_version.split(".", 2)
+    major = int(v1)
+    minor = int(v2)
+    patch_version = int(v3)
     if increment == "patch":
         patch_version += 1
     elif increment == "minor":
@@ -51,6 +55,7 @@ def _get_next_version(curr_version, increment):
         raise ValueError(
             "Invalid increment type. Must be 'major', 'minor', or 'patch'."
         )
+    # Use string formatting only once
     return f"{major}.{minor}.{patch_version}"
 
 
